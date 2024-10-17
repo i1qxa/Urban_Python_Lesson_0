@@ -1,7 +1,7 @@
 # task 2
 my_dict = {"Ivan": 1989, "Feofan": 1966, "Elsa": 2000}
 print(my_dict)
-my_dict.update({"Boris":1999, "Donald":1888})
+my_dict.update({"Boris": 1999, "Donald": 1888})
 my_dict.pop("Elsa")
 print(my_dict)
 
