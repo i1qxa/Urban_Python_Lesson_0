@@ -1,3 +1,47 @@
+def calculate_structure_sum(params) -> int:
+    if len(params) == 0:
+        return 0
+    params = collection_to_list(params)
+    param = params[0]
+    if isinstance(param, int):
+        params.remove(param)
+        return param + calculate_structure_sum(params)
+    elif isinstance(param, str):
+        params.remove(param)
+        return len(param) + calculate_structure_sum(params)
+    elif isinstance(param, list):
+        return calculate_structure_sum(param)
+    elif isinstance(param, set):
+        return calculate_structure_sum(list(param))
+    elif isinstance(param, tuple):
+        if len(param) == 0:
+            params.remove(param)
+            return calculate_structure_sum(list(params))
+        return calculate_structure_sum(list(param))
+    elif isinstance(param, dict):
+        dict_as_list = list()
+        dict_as_list.extend(param.keys())
+        dict_as_list.extend(param.values())
+        return calculate_structure_sum(dict_as_list)
+
+
+def calculate(smth) -> int:
+    result = 0
+    for i in range(0, len(smth)):
+        result += calculate_structure_sum(smth[i])
+    return result
+
+
+def collection_to_list(collection) -> list:
+    if isinstance(collection, (tuple, set, list, int, str)):
+        return list(collection)
+    elif isinstance(collection, dict):
+        lst = list()
+        lst.extend(collection.keys())
+        lst.extend(collection.values())
+        return lst
+
+
 data_structure = [
     [1, 2, 3],
     {'a': 4, 'b': 5},
@@ -6,62 +50,4 @@ data_structure = [
     ((), [{(2, 'Urban', ('Urban2', 35))}])
 ]
 
-sample_data = [
-    ((), [{(2, 'Urban', ('Urban2', 35))}])
-]
-
-sub_stack = list()
-
-
-def calculate_structure_sum(data: list) -> int:
-    if data.__len__() == 0 and sub_stack.__len__() == 0:
-        return 0
-
-    if sub_stack.__len__() != 0:
-        item = sub_stack[0]
-        if not isinstance(item, int) and not isinstance(item, str) and len(item) == 0:
-            sub_stack.remove(item)
-            return calculate_structure_sum(data)
-
-    else:
-        item = data[0]
-    print(item)
-
-    if isinstance(item, int):
-        if sub_stack.__len__() > 0:
-            sub_stack.remove(item)
-        else:
-            data.remove(item)
-        return item + calculate_structure_sum(data)
-    elif isinstance(item, str):
-        if sub_stack.__len__() > 0:
-            sub_stack.remove(item)
-        else:
-            data.remove(item)
-        return item.__len__() + calculate_structure_sum(data)
-    elif isinstance(item, list):
-        if sub_stack.__len__() == 0:
-            data.remove(item)
-        sub_stack.extend(item)
-        return calculate_structure_sum(data)
-    elif isinstance(item, set):
-        if sub_stack.__len__() == 0:
-            data.remove(item)
-        sub_stack.extend(item)
-        return calculate_structure_sum(data)
-    elif isinstance(item, dict):
-        if sub_stack.__len__() == 0:
-            data.remove(item)
-        else:
-            sub_stack.remove(item)
-        sub_stack.extend(item.keys())
-        sub_stack.extend(item.values())
-        return calculate_structure_sum(data)
-    elif isinstance(item, tuple):
-        if sub_stack.__len__() == 0:
-            data.remove(item)
-        sub_stack.extend(list(item))
-        return calculate_structure_sum(data)
-
-
-print(f"Result: {calculate_structure_sum(sample_data)}")
+print(calculate(data_structure))
