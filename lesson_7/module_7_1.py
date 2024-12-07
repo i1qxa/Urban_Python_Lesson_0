@@ -29,6 +29,7 @@ class Shop:
                 products_in_shop += new_product
                 products_to_add += new_product
         file.write(products_to_add)
+        file.close()
 
 
 s1 = Shop()
