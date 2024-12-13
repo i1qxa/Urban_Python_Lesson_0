@@ -6,6 +6,7 @@ def custom_write(file_name: str, strings: [str]):
         res[(pos, file.tell())] = string
         file.write(f"{string}\n")
         pos += 1
+    file.close()
     return res
 
 
